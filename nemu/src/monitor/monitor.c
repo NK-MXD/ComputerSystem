@@ -51,6 +51,7 @@ static inline int load_default_img() {
   return sizeof(img);
 }
 
+//note: load image with client program
 static inline void load_img() {
   long size;
   if (img_file == NULL) {
@@ -79,6 +80,7 @@ static inline void load_img() {
 #endif
 }
 
+//note: somulate the restart of computer
 static inline void restart() {
   /* Set the initial instruction pointer. */
   cpu.eip = ENTRY_START;
