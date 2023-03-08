@@ -117,7 +117,7 @@ int init_monitor(int argc, char *argv[]) {
 
   /* Test the implementation of the `CPU_state' structure. */
   reg_test();
-
+  //note: initialize some random data
 #ifdef DIFF_TEST
   /* Fork a child process to perform differential testing. */
   init_difftest();
@@ -125,7 +125,7 @@ int init_monitor(int argc, char *argv[]) {
 
   /* Load the image to memory. */
   load_img();
-
+  //note: load image
   /* Initialize this virtual computer system. */
   restart();
 

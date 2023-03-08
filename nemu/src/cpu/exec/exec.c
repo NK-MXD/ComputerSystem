@@ -2,7 +2,7 @@
 #include "all-instr.h"
 
 typedef struct {
-  DHelper decode;
+  DHelper decode;//TODO N: DHelper and EHelper is vaddr_t*
   EHelper execute;
   int width;
 } opcode_entry;
@@ -221,15 +221,17 @@ make_EHelper(real) {
 
 static inline void update_eip(void) {
   cpu.eip = (decoding.is_jmp ? (decoding.is_jmp = 0, decoding.jmp_eip) : decoding.seq_eip);
+  //TODO N: if jmp, cpu.eip = decoding.jmp_eip, else next eip
 }
 
+//TODO N: will loop n times
 void exec_wrapper(bool print_flag) {
 #ifdef DEBUG
   decoding.p = decoding.asm_buf;
   decoding.p += sprintf(decoding.p, "%8x:   ", cpu.eip);
 #endif
-
   decoding.seq_eip = cpu.eip;
+  //TODO N: let CPU exec the Instruction which eip pointing.
   exec_real(&decoding.seq_eip);
 
 #ifdef DEBUG
@@ -237,6 +239,7 @@ void exec_wrapper(bool print_flag) {
   sprintf(decoding.p, "%*.s", 50 - (12 + 3 * instr_len), "");
   strcat(decoding.asm_buf, decoding.assembly);
   Log_write("%s\n", decoding.asm_buf);
+  //TODO N: print_flag is used to control printing asm_buf
   if (print_flag) {
     puts(decoding.asm_buf);
   }
@@ -245,11 +248,12 @@ void exec_wrapper(bool print_flag) {
 #ifdef DIFF_TEST
   uint32_t eip = cpu.eip;
 #endif
-
+  //TODO QUES: why assign seq_eip == cpu.eip
+  //then update eip, cpu.eip == seq_eip?????
   update_eip();
 
 #ifdef DIFF_TEST
   void difftest_step(uint32_t);
   difftest_step(eip);
 #endif
-}
+

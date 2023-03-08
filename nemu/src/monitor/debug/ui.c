@@ -77,6 +77,7 @@ static int cmd_help(char *args) {
 }
 
 void ui_mainloop(int is_batch_mode) {
+  //TODO N: if is_batch_mode == True, it will not step in while 
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
@@ -84,6 +85,7 @@ void ui_mainloop(int is_batch_mode) {
 
   while (1) {
     char *str = rl_gets();
+    //TODO N: get a line from terminal
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
@@ -102,15 +104,16 @@ void ui_mainloop(int is_batch_mode) {
     extern void sdl_clear_event_queue(void);
     sdl_clear_event_queue();
 #endif
-
+    //TODO N: compare cmd and names in cmd_table
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
+        //TODO N: handler the args of the cmd 
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
     }
-
+    //TODO N: the cmd is undefined
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
 }
