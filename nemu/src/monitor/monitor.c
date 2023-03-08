@@ -51,6 +51,7 @@ static inline int load_default_img() {
   return sizeof(img);
 }
 
+//note: load image with client program
 static inline void load_img() {
   long size;
   if (img_file == NULL) {
@@ -79,6 +80,7 @@ static inline void load_img() {
 #endif
 }
 
+//note: somulate the restart of computer
 static inline void restart() {
   /* Set the initial instruction pointer. */
   cpu.eip = ENTRY_START;
@@ -115,7 +117,7 @@ int init_monitor(int argc, char *argv[]) {
 
   /* Test the implementation of the `CPU_state' structure. */
   reg_test();
-
+  //note: initialize some random data
 #ifdef DIFF_TEST
   /* Fork a child process to perform differential testing. */
   init_difftest();
@@ -123,7 +125,7 @@ int init_monitor(int argc, char *argv[]) {
 
   /* Load the image to memory. */
   load_img();
-
+  //note: load image
   /* Initialize this virtual computer system. */
   restart();
 
