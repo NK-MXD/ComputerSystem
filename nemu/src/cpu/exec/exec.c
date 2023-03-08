@@ -218,10 +218,9 @@ make_EHelper(real) {
   set_width(opcode_table[opcode].width);
   idex(eip, &opcode_table[opcode]);
 }
-
+//TODO N: if jmp, cpu.eip = decoding.jmp_eip, else next eip
 static inline void update_eip(void) {
   cpu.eip = (decoding.is_jmp ? (decoding.is_jmp = 0, decoding.jmp_eip) : decoding.seq_eip);
-  //TODO N: if jmp, cpu.eip = decoding.jmp_eip, else next eip
 }
 
 //TODO N: will loop n times
@@ -250,10 +249,11 @@ void exec_wrapper(bool print_flag) {
 #endif
   //TODO QUES: why assign seq_eip == cpu.eip
   //then update eip, cpu.eip == seq_eip?????
+
   update_eip();
 
 #ifdef DIFF_TEST
   void difftest_step(uint32_t);
   difftest_step(eip);
 #endif
-
+}
