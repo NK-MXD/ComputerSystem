@@ -54,7 +54,7 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "n", "next step", cmd_n },
+
   /* TODO: Add more commands */
   { "si", "exec one or more steps", cmd_si },
   { "info", "Display resigters(info r) and watchpoint information(info w)", cmd_info },
@@ -137,7 +137,25 @@ static int cmd_p(char* args){
 
 static int cmd_x(char* args){
     //TODO N: first complete a simple version
+    char *arg_num = strtok(NULL, " ");
+    char *arg_start = strtok(NULL, " ");
 
+    int num = 0;
+    vaddr_t start = 0;
+    
+    sscanf(arg_num, "%d", &num);
+    sscanf(arg_start, "%x",&start);
+
+    //next start output;
+    for(int i = 0; i < num; i++){
+        printf("0x%08x:", start);
+        printf("0x%08x ", vaddr_read(start,4));
+        start += 4;
+        if(i % 4 == 0){
+            printf("\n");
+        }
+    }
+    printf("\n");
     return 0;
 }
 
