@@ -28,6 +28,8 @@ char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
+  //TODO N: why argument is -1?
+  //we can see cpu_exec argument is unsigned int, so give -1 as argument means the max value for cpu_exec. Cpu_exec can exec most instrutions.
   cpu_exec(-1);
   return 0;
 }
@@ -48,7 +50,12 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-
+  { "si", "exec one or more steps", cmd_si },
+  { "info", "Display resigters(info r) and watchpoint information(info w)", cmd_info },
+  { "p", "get the value of the expression", cmd_p },
+  { "x", "scan ", cmd_x },
+  { "w", "set the watchpoint", cmd_w },
+  { "d", "delete the watchpoint", cmd_d },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -75,6 +82,53 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
+
+static int cmd_si(char* args){
+    char* arg = strtok(NULL, " ");
+
+    if(arg == NULL){
+        // exec one step
+        cpu_exec(1);
+        return 0;
+    }else{
+        // exec more steps
+        int step = 1;
+        sscanf(arg, "%d", &step);
+        if(step <= 0){
+            printf("wrong argument");
+            return 0;
+        }
+        for(int i = 0; i < step; i++){
+            cpu_exec(1);
+        }
+    }
+    return 0;
+}
+
+static int cmd_info(char* args){
+    return 0;
+}
+
+static int cmd_p(char* args){
+    return 0;
+}
+
+static int cmd_x(char* args){
+    return 0;
+}
+
+static int cmd_w(char* args){
+    return 0;
+}
+
+static int cmd_w(char* args){
+    return 0;
+}
+
+static int cmd_d(char* args){
+    return 0;
+}
+
 
 void ui_mainloop(int is_batch_mode) {
   //TODO N: if is_batch_mode == True, it will not step in while 
