@@ -39,6 +39,12 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
+static int cmd_si(char *args);
+static int cmd_info(char *args);
+static int cmd_p(char *args);
+static int cmd_x(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
   char *name;
@@ -106,6 +112,22 @@ static int cmd_si(char* args){
 }
 
 static int cmd_info(char* args){
+    char *arg = strtok(NULL, " ");
+    if(strcmp(arg, "r") == 0){
+        printf("Show information of resigters at the point:\n");
+        for(int i = 0; i < 8; i++){
+            printf("%s\t\t", reg_name(i, 4));
+            printf("0x%08x\t\t%d\n",cpu.gpr[i]._32, cpu.gpr[i]._32);
+        }
+        printf("eip\t\t0x%08x\t\t%d\n", cpu.eip, cpu.eip);
+    }else if(strcmp(arg, "w") == 0){
+        //show information of watchpoints
+        printf("Show information of watchpoints at the point:\n");
+        
+
+    }else{
+        printf("Unknown command '%s'\n", arg);
+    }
     return 0;
 }
 
@@ -114,10 +136,6 @@ static int cmd_p(char* args){
 }
 
 static int cmd_x(char* args){
-    return 0;
-}
-
-static int cmd_w(char* args){
     return 0;
 }
 
