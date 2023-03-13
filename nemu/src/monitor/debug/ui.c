@@ -114,7 +114,7 @@ static int cmd_si(char* args){
 static int cmd_info(char* args){
     char *arg = strtok(NULL, " ");
     if(strcmp(arg, "r") == 0){
-        printf("register\t\thex_value\t\tdec_value");
+        printf("register\t\thex_value\t\tdec_value\n");
         for(int i = 0; i < 8; i++){
             printf("%s\t\t", reg_name(i, 4));
             printf("0x%08x\t\t%d\n",cpu.gpr[i]._32, cpu.gpr[i]._32);
