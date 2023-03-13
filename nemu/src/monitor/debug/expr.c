@@ -7,7 +7,13 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ
+  	TK_NOTYPE = 256,
+	TK_EQ,
+	TK_DEC,
+	TK_HEX,
+	TK_OR,
+	TK_AND,
+	TK_REG
 
   /* TODO: Add more token types */
 
@@ -22,9 +28,22 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
-  {"==", TK_EQ}         // equal
+  	{"[ |\t\n]+", TK_NOTYPE},
+	{"\\+", '+'},//两次转义得到+
+	{"\\-", '-'},
+	{"\\*", '*'},
+	{"\\/", '/'},
+	{"\\%", '%'},
+
+	{"\\(", '('},
+	{"\\)", ')'},
+	{"$[a-z]{2,3}", TK_REG},
+	{"0[xX][0-9a-fA-F]+", TK_HEX},//16进制的识别应当在10进制前面
+	{"[0-9]+", TK_DEC},
+	{"==", TK_EQ},
+	{"&&", TK_AND},
+	{"\\|\\|", TK_OR},
+	{"!", '!'},
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -60,7 +79,12 @@ static bool make_token(char *e) {
   int position = 0;
   int i;
   regmatch_t pmatch;
-
+	/*用来保存匹配结果子串的位置, 其定义如下:
+	typedef struct {
+        regoff_t rm_so;// 如果不为-1, 代表匹配的最大子串在字符串中的起始偏移量
+        regoff_t rm_eo;// 表示的是匹配的最大字符串的结束偏移量
+    } regmatch_t;
+	*/
   nr_token = 0;
 
   while (e[position] != '\0') {
@@ -79,11 +103,29 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        switch (rules[i].token_type) {
-          default: TODO();
-        }
+        switch(rules[i].token_type){
+		case TK_NOTYPE:
+			break;
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+		case '(':
+		case ')':
+		case '!':
+		case TK_AND:
+		case TK_EQ:
+		case TK_OR:
+		case TK_DEC:
+		case TK_HEX:
+		case TK_REG:
+		default: 
+			tokens[nr_token].type = rules[i].token_type;
+			strncpy(tokens[nr_token++].str, substr_start, substr_len);
+		break;
+	}
+	break;
 
-        break;
       }
     }
 
