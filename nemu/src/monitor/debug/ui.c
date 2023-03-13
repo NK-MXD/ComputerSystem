@@ -146,7 +146,7 @@ static int cmd_x(char* args){
     sscanf(arg_num, "%d", &num);
     sscanf(arg_start, "%x",&start);
 
-    //next start output;
+    //next start output: the addr here is virtual address
     for(int i = 0; i < num; i++){
         printf("0x%08x:", start);
         printf("0x%08x ", vaddr_read(start,4));
