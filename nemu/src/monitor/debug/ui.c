@@ -151,7 +151,7 @@ static int cmd_x(char* args){
         printf("0x%08x:", start);
         printf("0x%08x ", vaddr_read(start,4));
         start += 4;
-        if(i % 4 == 0){
+        if((i+1) % 4 == 0){
             printf("\n");
         }
     }
