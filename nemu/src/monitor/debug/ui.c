@@ -124,7 +124,7 @@ static int cmd_info(char* args){
         //show information of watchpoints
         printf("Show information of watchpoints at the point:\n");
         
-
+        
     }else{
         printf("Unknown command '%s'\n", arg);
     }
@@ -136,6 +136,8 @@ static int cmd_p(char* args){
 }
 
 static int cmd_x(char* args){
+    //TODO N: first complete a simple version
+
     return 0;
 }
 
