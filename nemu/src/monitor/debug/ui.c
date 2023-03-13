@@ -112,6 +112,14 @@ static int cmd_si(char* args){
 }
 
 static int cmd_info(char* args){
+    char *arg = strtok(NULL, " ");
+    if(strcmp(arg, "r") == 0){
+        for(int i = 0; i < 8; i++){
+            printf("%s\t\t", reg_name(i, 4));
+            printf("0x%08x\t\t%d\n",cpu.gpr[i]._32, cpu.gpr[i]._32);
+        }
+        printf("eip\t\t0x%08x\t\t%d\n", cpu.eip, cpu.eip);
+    }
     return 0;
 }
 
